@@ -288,7 +288,7 @@ var items=load(K.items,null); if(!items||!items.length){items=DEFAULT_ITEMS.slic
 var order=load(K.order,{});
 var meta=load(K.meta,{date:"",ref:"",fao:""});
 var hist=load(K.hist,[]);
-var closed=load(K.closed,{});
+var catClosed=load(K.closed,{});
 var filter="__note", query="";
 
 /* ---------- utils ---------- */
@@ -365,7 +365,7 @@ function render(){
     var c=CATS[i], list=items.filter(function(x){return x.cat===c.id && matches(x);})
                             .sort(function(a,b){return (a.seq||999)-(b.seq||999);});
     if(!list.length && (query||filter!=="__all")) continue;
-    var isClosed=!!closed[c.id];
+    var isClosed=!!catClosed[c.id];
     h+='<section class="cat '+(isClosed?"closed":"")+'" data-cat="'+c.id+'">'+
        '<button class="cathead" data-act="toggle" data-cat="'+c.id+'" style="background:'+c.tint+';color:'+c.fg+'">'+
        c.emoji+' '+esc(c.name)+' <span class="cnt">('+list.length+')</span><span class="arrow">▼</span></button>'+
@@ -405,7 +405,7 @@ $("#list").addEventListener("click",function(e){
   else if(act==="add"){ openEdit(null,b.getAttribute("data-cat")); }
   else if(act==="toggle"){
     var c=b.getAttribute("data-cat");
-    closed[c]=!closed[c]; store(K.closed,closed);
+    catClosed[c]=!catClosed[c]; store(K.closed,catClosed);
     b.parentNode.classList.toggle("closed");
   }
 });
